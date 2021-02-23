@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+<?php
+// Your code here!
+$content = file_get_contents('https://npiregistry.cms.hhs.gov/api/?number=&enumeration_type=&taxonomy_description=&first_name=smith&use_first_name_alias=&last_name=&organization_name=&address_purpose=&city=&state=&postal_code=&country_code=&limit=100&skip=&version=2.1');
+
+$result = json_decode($content);
+
+$count = $result->result_count;
+
+if($count > 0){
+echo "<table id='myTable' border='1'>";
+echo"<tr>";
+	echo"<th>number</th>";
+	echo"<th align='left'>type</th>";
+	echo"<th align='left'>name</th>";
+echo"</tr>";
+    
+for($i = 0; $i < $count; $i++)
+{
+
+$number = $result->results[$i]->number;
+
+$enm_type = $result->results[$i]->enumeration_type;
+
+$name = $result->results[$i]->basic->name;
+ 
+echo"<tr>";
+		echo"<td>".$number."</td>";
+		echo"<td align='left'> ".$enm_type."</td>";
+		echo"<td align='left'> ".$name."</td>";
+	
+}
+echo"</tr>";
+echo"</table>";
+}
+?>
+
+<script type="text/javascript">
+	$(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+</body>
+</html>
